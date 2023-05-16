@@ -24,8 +24,16 @@ export class DetailsComponent implements OnInit {
     pacientesActuales: 0,
     trabajadoresActuales: 0
   };
+  // public hospitalWithOutID :HospitalWithOutId ={
+  //   nombre: '',
+  //   cantTrabajadores: 0,
+  //   capacidad: 0,
+  //   especialidades: 0,
+  //   localizacion: 0
+  // }
 
   hospitalForm = new FormGroup({
+    id : new FormControl(''),
     nombre: new FormControl(''),
     localizacion: new FormControl(0),
     especialidades: new FormControl(''),
@@ -48,11 +56,12 @@ export class DetailsComponent implements OnInit {
       // console.log(this.hospital, 'INCIo');
 
       this.hospitalForm.setValue({
+        id:this.hospital.id,
         nombre: this.hospital.nombre,
         cantTrabajadores: this.hospital.cantTrabajadores,
         capacidad: this.hospital.capacidad,
         especialidades: this.hospital.especialidades,
-        localizacion: this.hospital.localizacion
+        localizacion: this.hospital.localizacion,
       })
 
     }
@@ -62,13 +71,29 @@ export class DetailsComponent implements OnInit {
     this.router.navigate(["/hospital/list"])
   }
   public saveDataHospital() {
+
+    console.log(this.hospitalForm.value);
+    
     if (this.hospitalForm.valid) {
-      let newHostpital = this.hospitalForm.value;
+
+      // if(this.hospitalForm.value.id==''){
+      //    this.newHostpital = {
+      //     nombre: this.hospitalForm.value.nombre,
+      //     cantTrabajadores: this.hospitalForm.value.cantTrabajadores,
+      //     capacidad: this.hospitalForm.value.capacidad,
+      //     especialidades: this.hospitalForm.value.especialidades,
+      //     localizacion: this.hospitalForm.value.localizacion
+      //   }
+      // }
+      
+        let newHostpital =  this.hospitalForm.value;
+      
+
       newHostpital.localizacion = Number(newHostpital.localizacion);
       // console.log(newHostpital, 'Created');
 
-      let endpoint = this._baseUrl + 'Hospital/EditHospital/' + this.hospital.id
-      this.http.put<any>(endpoint, newHostpital).subscribe({
+      let endpoint = this._baseUrl + 'Hospital/AddEditHospital'
+      this.http.post(endpoint, newHostpital).subscribe({
         next: data => {
           this.goBack()
         },
@@ -103,6 +128,14 @@ export class DetailsComponent implements OnInit {
 
 
 }
+
+// export interface HospitalWithOutId{
+//   nombre: string,
+//   cantTrabajadores: number,
+//   capacidad: number,
+//   especialidades: number,
+//   localizacion: number
+// }
 
 
 export interface Hospital {
