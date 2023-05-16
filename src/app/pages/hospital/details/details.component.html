@@ -1,9 +1,5 @@
 <h2 class="col-10 offset-1 mb-2 pb-2 mt-3" style="border-bottom: solid 1px red;">{{!hospitalExist ? 'Crear Hospital' : hospitalExist ?'Editar Hospital':''}} </h2>
 
-<!-- <label class="float-end">
-    <label class="btn btn-secondary" (click)="goBack()">Volver</label>
-    <label class="btn btn-success" (click)="saveDataHospital()">{{hospitalExist ? 'Guardar' : !hospitalExist ? 'Crear':''}}</label>
-</label> -->
 
 <form class="col-10 offset-1 row" [formGroup]="hospitalForm" (ngSubmit)="saveDataHospital()">
     <div class="col-4 mb-2">

@@ -68,6 +68,9 @@ constructor(
   goToDetailsHospital(id: string){
     this.router.navigate(['hospital/details',id])
   }
+  gotoCreateHospital(){
+    this.router.navigate(['hospital/new'])
+  }
 }
 
 

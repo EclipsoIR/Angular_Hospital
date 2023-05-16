@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Localizacion } from '../list/list.component';
+// import { config } from '../../../../../src/assets/config.json';
 
 @Component({
   selector: 'app-details',
@@ -12,7 +13,7 @@ import { Localizacion } from '../list/list.component';
 export class DetailsComponent implements OnInit {
   private _baseUrl = "https://localhost:7099/"
   public hospitalExist: boolean = false;
-  public localitationSelect = [{id:0, name:Localizacion.espana},{id:1, name:Localizacion.portugal},{id:2, name:Localizacion.francia}]
+  public localitationSelect = [{ id: 0, name: Localizacion.espana }, { id: 1, name: Localizacion.portugal }, { id: 2, name: Localizacion.francia }]
   public hospital: Hospital = {
     id: '',
     nombre: '',
@@ -33,18 +34,18 @@ export class DetailsComponent implements OnInit {
   });
 
   constructor(
-    private readonly router: Router,
+    private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
   ) {
   }
   async ngOnInit(): Promise<void> {
     const hospitalId = this.route.snapshot.paramMap.get('id');
-    console.log(hospitalId, 'ID');
-    
+    // console.log(hospitalId, 'ID');
+
     if (hospitalId) {
       this.hospital = await this.getHospitalById(hospitalId)
-      console.log(this.hospital, 'INCIo');
+      // console.log(this.hospital, 'INCIo');
 
       this.hospitalForm.setValue({
         nombre: this.hospital.nombre,
@@ -53,7 +54,7 @@ export class DetailsComponent implements OnInit {
         especialidades: this.hospital.especialidades,
         localizacion: this.hospital.localizacion
       })
-      
+
     }
 
   }
@@ -64,7 +65,7 @@ export class DetailsComponent implements OnInit {
     if (this.hospitalForm.valid) {
       let newHostpital = this.hospitalForm.value;
       newHostpital.localizacion = Number(newHostpital.localizacion);
-      console.log(newHostpital, 'Created');
+      // console.log(newHostpital, 'Created');
 
       let endpoint = this._baseUrl + 'Hospital/EditHospital/' + this.hospital.id
       this.http.put<any>(endpoint, newHostpital).subscribe({
@@ -75,7 +76,9 @@ export class DetailsComponent implements OnInit {
           console.log('errorrrrrrrr');
         }
       })
-    }
+    } else
+      console.log('ERRRRRRRRRRR');
+
   }
 
   private async getHospitalById(id: string): Promise<Hospital> {
@@ -97,8 +100,8 @@ export class DetailsComponent implements OnInit {
     //   }
     // })
   }
-  
-  
+
+
 }
 
 
