@@ -1,0 +1,21 @@
+<h2 class=" col-8 offset-2 mb-2 newBorder">Hospital</h2>
+
+<div class="col-8 offset-2 row border">
+    <div class="col-12 row">
+        <div class="col-2"></div>
+        <div class="col-5">Nombre</div>
+        <div class="col-5">Especialidad</div>
+    </div>
+    <div class="col-12 row rows mb-1" *ngFor="let hospital of hospitales">
+        <div class="col-2">
+            <label class="btn col-3" (click)="goToDetailsHospital(hospital.id)">
+                &#9998;
+            </label>
+            <label class="btn offset-2 col-3" (click)="deleteHospital(hospital.id)">
+                <b>X</b>
+            </label>
+        </div>
+        <div class="col-5 pt-1">{{hospital.nombre}}</div>
+        <div class="col-5 pt-1">{{hospital.especialidades}}</div>
+    </div>
+</div>
