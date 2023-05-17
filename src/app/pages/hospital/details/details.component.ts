@@ -24,14 +24,14 @@ export class DetailsComponent implements OnInit {
     pacientesActuales: 0,
     trabajadoresActuales: 0
   };
-  public hospitalPostDTO :HospitalPostDTO ={
-    id:'00000000-0000-0000-0000-000000000000',
-    nombre: '',
-    cantTrabajadores: 0,
-    capacidad: 0,
-    especialidades: '',
-    localizacion: 0
-  }
+  hospitalForm = new FormGroup({
+    id: new FormControl(''),
+    nombre: new FormControl(''),
+    localizacion: new FormControl(0),
+    especialidades: new FormControl(''),
+    capacidad: new FormControl(0),
+    cantTrabajadores: new FormControl(0),
+  });
 
   constructor(
     private router: Router,
@@ -44,24 +44,38 @@ export class DetailsComponent implements OnInit {
 
     if (hospitalId) {
       this.hospital = await this.getHospitalById(hospitalId)
-      this.hospitalPostDTO.id=hospitalId
+
+      this.hospitalForm.setValue({
+        id: this.hospital.id,
+        nombre: this.hospital.nombre,
+        cantTrabajadores: this.hospital.cantTrabajadores,
+        capacidad: this.hospital.capacidad,
+        especialidades: this.hospital.especialidades,
+        localizacion: this.hospital.localizacion,
+      })
     }
+    else
+      this.hospitalForm.setValue({
+        id: '00000000-0000-0000-0000-000000000000',
+        nombre: this.hospital.nombre,
+        cantTrabajadores: this.hospital.cantTrabajadores,
+        capacidad: this.hospital.capacidad,
+        especialidades: this.hospital.especialidades,
+        localizacion: this.hospital.localizacion,
+      })
   }
   public goBack() {
     this.router.navigate(["/hospital/list"])
   }
   public saveDataHospital() {
-    console.log(this.hospital);
-    
-    this.hospitalPostDTO.nombre=this.hospital.nombre;
-    this.hospitalPostDTO.cantTrabajadores=this.hospital.cantTrabajadores;
-    this.hospitalPostDTO.capacidad=this.hospital.capacidad;
-    this.hospitalPostDTO.especialidades=this.hospital.especialidades;
-    this.hospitalPostDTO.localizacion=Number(this.hospital.localizacion)
-    console.log(this.hospitalPostDTO);
-    
+
+    console.log(this.hospitalForm.value);
+
+    if (this.hospitalForm.valid) {
+      let newHostpital = this.hospitalForm.value;
+      newHostpital.localizacion = Number(newHostpital.localizacion);
       let endpoint = this._baseUrl + 'Hospital/AddEditHospital'
-      this.http.post(endpoint, this.hospitalPostDTO).subscribe({
+      this.http.post(endpoint, newHostpital).subscribe({
         next: data => {
           this.goBack()
         },
@@ -69,12 +83,11 @@ export class DetailsComponent implements OnInit {
           console.log('errorrrrrrrr');
         }
       })
-
-
+    } else
+      console.log('ERRRRRRRRRRR');
   }
 
   private async getHospitalById(id: string): Promise<Hospital> {
-
     let endpoint = this._baseUrl + 'Hospital/GetHospitaById/' + id
     return fetch(endpoint, {
       headers: { 'Cotent-type': 'application/json' },
@@ -86,19 +99,7 @@ export class DetailsComponent implements OnInit {
       })
     })
   }
-
-
 }
-
-export interface HospitalPostDTO{
-  id: string|null,
-  nombre: string,
-  cantTrabajadores: number,
-  capacidad: number,
-  especialidades: string,
-  localizacion: number
-}
-
 
 export interface Hospital {
   id: string,
