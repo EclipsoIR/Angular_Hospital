@@ -8,6 +8,9 @@ const routes: Routes = [
   {
   path :"hospital",loadChildren : () => import("./hospital/hospital.module").then(m=>m.HospitalModule),
   },
+  {
+    path:"persona", loadChildren : ()=> import("./persona/persona.module").then(m=>m.PersonaModule),
+  }
 ];
 
 
