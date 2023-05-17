@@ -24,14 +24,14 @@ export class DetailsComponent implements OnInit {
     pacientesActuales: 0,
     trabajadoresActuales: 0
   };
-
-  hospitalForm = new FormGroup({
-    nombre: new FormControl(''),
-    localizacion: new FormControl(0),
-    especialidades: new FormControl(''),
-    capacidad: new FormControl(0),
-    cantTrabajadores: new FormControl(0),
-  });
+  public hospitalPostDTO :HospitalPostDTO ={
+    id:'00000000-0000-0000-0000-000000000000',
+    nombre: '',
+    cantTrabajadores: 0,
+    capacidad: 0,
+    especialidades: '',
+    localizacion: 0
+  }
 
   constructor(
     private router: Router,
@@ -41,34 +41,27 @@ export class DetailsComponent implements OnInit {
   }
   async ngOnInit(): Promise<void> {
     const hospitalId = this.route.snapshot.paramMap.get('id');
-    // console.log(hospitalId, 'ID');
 
     if (hospitalId) {
       this.hospital = await this.getHospitalById(hospitalId)
-      // console.log(this.hospital, 'INCIo');
-
-      this.hospitalForm.setValue({
-        nombre: this.hospital.nombre,
-        cantTrabajadores: this.hospital.cantTrabajadores,
-        capacidad: this.hospital.capacidad,
-        especialidades: this.hospital.especialidades,
-        localizacion: this.hospital.localizacion
-      })
-
+      this.hospitalPostDTO.id=hospitalId
     }
-
   }
   public goBack() {
     this.router.navigate(["/hospital/list"])
   }
   public saveDataHospital() {
-    if (this.hospitalForm.valid) {
-      let newHostpital = this.hospitalForm.value;
-      newHostpital.localizacion = Number(newHostpital.localizacion);
-      // console.log(newHostpital, 'Created');
-
-      let endpoint = this._baseUrl + 'Hospital/EditHospital/' + this.hospital.id
-      this.http.put<any>(endpoint, newHostpital).subscribe({
+    console.log(this.hospital);
+    
+    this.hospitalPostDTO.nombre=this.hospital.nombre;
+    this.hospitalPostDTO.cantTrabajadores=this.hospital.cantTrabajadores;
+    this.hospitalPostDTO.capacidad=this.hospital.capacidad;
+    this.hospitalPostDTO.especialidades=this.hospital.especialidades;
+    this.hospitalPostDTO.localizacion=Number(this.hospital.localizacion)
+    console.log(this.hospitalPostDTO);
+    
+      let endpoint = this._baseUrl + 'Hospital/AddEditHospital'
+      this.http.post(endpoint, this.hospitalPostDTO).subscribe({
         next: data => {
           this.goBack()
         },
@@ -76,8 +69,7 @@ export class DetailsComponent implements OnInit {
           console.log('errorrrrrrrr');
         }
       })
-    } else
-      console.log('ERRRRRRRRRRR');
+
 
   }
 
@@ -93,15 +85,18 @@ export class DetailsComponent implements OnInit {
         return data
       })
     })
-    //  this.http.get(endpoint).subscribe({
-    //   next: data => {
-
-    //     return data as Hospital;
-    //   }
-    // })
   }
 
 
+}
+
+export interface HospitalPostDTO{
+  id: string|null,
+  nombre: string,
+  cantTrabajadores: number,
+  capacidad: number,
+  especialidades: string,
+  localizacion: number
 }
 
 
