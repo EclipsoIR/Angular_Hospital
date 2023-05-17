@@ -1,34 +1,34 @@
 <h2 class="col-10 offset-1 mb-2 pb-2 mt-3" style="border-bottom: solid 1px red;">{{!hospitalExist ? 'Crear Hospital' : hospitalExist ?'Editar Hospital':''}} </h2>
 
 
-<div class="col-10 offset-1 row" >
+<form class="col-10 offset-1 row" [formGroup]="hospitalForm" (ngSubmit)="saveDataHospital()">
     <div class="col-4 mb-2">
         <label class="col-4" for="nombre">Hospital Name</label>
-        <input class="col-6"  [(ngModel)]="hospital.nombre" type="text" >
+        <input class="col-6" formControlName="nombre" type="text" >
     </div>
     <div class="col-4 mb-2">
         <label class="col-4" for="localizacion">Localization</label>
-        <select class="col-6"  type="number" [(ngModel)]="hospital.localizacion">
+        <select class="col-6" formControlName="localizacion" type="number" >
             <option *ngFor="let location of localitationSelect" value="{{location.id}}">{{location.name}}</option>
         </select>
     </div>
     <div class="col-4 mb-2">
         <label class="col-4" for="especialidades">Specialty</label>
-        <input class="col-6"  type="text" [(ngModel)]="hospital.especialidades" >
+        <input class="col-6" formControlName="especialidades" type="text" >
     </div>
     <div class="col-4 mb-2">
         <label class="col-4" for="capacidad">Capacity</label>
-        <input class="col-6"  type="number" [(ngModel)]="hospital.capacidad">
+        <input class="col-6" formControlName="capacidad" type="number" >
     </div>
     <div >
         <label class="col-4" for="cantTrabajadores">Number of Workers</label>
-        <input class="col-6"  type="number" [(ngModel)]="hospital.cantTrabajadores" >
+        <input class="col-6" formControlName="cantTrabajadores" type="number" >
     </div>
     <div class="flex">
         <label class="float-end">
             <label class="btn btn-secondary" (click)="goBack()">Volver</label>
-            <button type="button" (click)="saveDataHospital()" class="btn btn-success">{{hospitalExist ? 'Guardar' : !hospitalExist ? 'Crear':''}}</button>
+            <button type="submit" class="btn btn-success">{{hospitalExist ? 'Guardar' : !hospitalExist ? 'Crear':''}}</button>
         </label>
     </div>
-</div>
+</form>
 
