@@ -24,14 +24,6 @@ export class DetailsComponent implements OnInit {
     pacientesActuales: 0,
     trabajadoresActuales: 0
   };
-  // public hospitalWithOutID :HospitalWithOutId ={
-  //   nombre: '',
-  //   cantTrabajadores: 0,
-  //   capacidad: 0,
-  //   especialidades: 0,
-  //   localizacion: 0
-  // }
-
   hospitalForm = new FormGroup({
     id: new FormControl(''),
     nombre: new FormControl(''),
@@ -49,11 +41,9 @@ export class DetailsComponent implements OnInit {
   }
   async ngOnInit(): Promise<void> {
     const hospitalId = this.route.snapshot.paramMap.get('id');
-    // console.log(hospitalId, 'ID');
 
     if (hospitalId) {
       this.hospital = await this.getHospitalById(hospitalId)
-      // console.log(this.hospital, 'INCIo');
 
       this.hospitalForm.setValue({
         id: this.hospital.id,
@@ -63,7 +53,6 @@ export class DetailsComponent implements OnInit {
         especialidades: this.hospital.especialidades,
         localizacion: this.hospital.localizacion,
       })
-
     }
     else
       this.hospitalForm.setValue({
@@ -74,7 +63,6 @@ export class DetailsComponent implements OnInit {
         especialidades: this.hospital.especialidades,
         localizacion: this.hospital.localizacion,
       })
-
   }
   public goBack() {
     this.router.navigate(["/hospital/list"])
@@ -84,15 +72,8 @@ export class DetailsComponent implements OnInit {
     console.log(this.hospitalForm.value);
 
     if (this.hospitalForm.valid) {
-
-
-
       let newHostpital = this.hospitalForm.value;
-
-
       newHostpital.localizacion = Number(newHostpital.localizacion);
-      // console.log(newHostpital, 'Created');
-
       let endpoint = this._baseUrl + 'Hospital/AddEditHospital'
       this.http.post(endpoint, newHostpital).subscribe({
         next: data => {
@@ -104,11 +85,9 @@ export class DetailsComponent implements OnInit {
       })
     } else
       console.log('ERRRRRRRRRRR');
-
   }
 
   private async getHospitalById(id: string): Promise<Hospital> {
-
     let endpoint = this._baseUrl + 'Hospital/GetHospitaById/' + id
     return fetch(endpoint, {
       headers: { 'Cotent-type': 'application/json' },
@@ -119,12 +98,6 @@ export class DetailsComponent implements OnInit {
         return data
       })
     })
-    //  this.http.get(endpoint).subscribe({
-    //   next: data => {
-
-    //     return data as Hospital;
-    //   }
-    // })
   }
 }
 
