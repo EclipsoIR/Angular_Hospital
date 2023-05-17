@@ -8,7 +8,7 @@
     </div>
     <div class="col-4 mb-2">
         <label class="col-4" for="localizacion">Localization</label>
-        <select class="col-6"  type="number" [(ngModel)]="hospital.localizacion">
+        <select class="col-6"  type="number" [(ngModel)]="hospitalPostDTO.localizacion" [value]="hospital.localizacion">
             <option *ngFor="let location of localitationSelect" value="{{location.id}}">{{location.name}}</option>
         </select>
     </div>
