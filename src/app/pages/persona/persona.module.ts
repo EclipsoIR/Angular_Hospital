@@ -13,7 +13,7 @@ const routes: Routes =[
     path:"details/:id", loadChildren:() => import("./details/details.module").then(m=>m.DetailsModule)
   },
   {
-    path:"new", loadChildren:()=> import("./details/details.module").then(m=>m.DetailsModule)
+    path:"new/:id", loadChildren:()=> import("./details/details.module").then(m=>m.DetailsModule)
   }
 ]
 
