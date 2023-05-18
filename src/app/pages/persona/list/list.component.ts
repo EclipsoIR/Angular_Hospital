@@ -61,10 +61,10 @@ export class ListComponent implements OnInit {
     this.currentPage += page;
 
     if (this.currentPage >= this.personas.totalPages) {
-      this.currentPage =  this.personas.totalPages
+      this.currentPage =  this.personas.totalPages;
     }
     else if(this.currentPage <= 0){
-      this.currentPage = 1
+      this.currentPage = 1;
     }
     console.log(this.currentPage);
     
