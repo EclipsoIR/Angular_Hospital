@@ -12,6 +12,7 @@ export class ListComponent implements OnInit {
   private _baseUrl = "https://localhost:7099";
   personas: DataTableDTO = { page: 1, totalPages: 1, result: [{ id: '0', edad: 20, estado: 1, nombre: '23', p_Apellido: '23', s_Apellido: '23' }] }
   currentPage = 1;
+  listPages: number[] =[]
   constructor(
     private httpClient: HttpClient,
     private readonly router: Router
@@ -21,15 +22,18 @@ export class ListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
 
-    this.personas = await this.getDataListByPage(this.currentPage);
+    this.personas = await this.getDataListByPage();
+    for(let i=1; i<=this.personas.totalPages;i++)
+    {
+      this.listPages.push(i);
+    }
     console.log(this.personas);
 
 
   }
 
-  async getDataListByPage(page: number): Promise<DataTableDTO> {
-    this.personas.result = [];
-    let endpoint = this._baseUrl + `/Persona/TablePersonaTable?page=${page}`
+  async getDataListByPage(): Promise<DataTableDTO> {
+    let endpoint = this._baseUrl + `/Persona/TablePersonaTable?page=${this.currentPage}`
     return fetch(endpoint, {
       headers: { 'Content-type': 'application/json' },
       method: 'GET'
@@ -64,7 +68,13 @@ export class ListComponent implements OnInit {
       this.currentPage = 1;
     }
     
-    this.personas = await this.getDataListByPage(this.currentPage);
+    this.personas = await this.getDataListByPage();
+  }
+
+  async pagesSelected(numero: number): Promise<void>{
+    this.currentPage = numero;
+    this.personas = await this.getDataListByPage();
+
   }
 
 
@@ -79,7 +89,7 @@ export class ListComponent implements OnInit {
 
       })
     })
-    await this.getDataListByPage(this.currentPage)
+    await this.getDataListByPage()
   }
 
 
@@ -88,7 +98,7 @@ export class ListComponent implements OnInit {
     this.router.navigate(["persona/details", id])
   }
   gotoCreatePaciente(id: string) {
-    this.router.navigate(["persona/new", id])
+    this.router.navigate(["persona/addPatient", id])
   }
 
 }

@@ -10,7 +10,7 @@
 
     </div>
     <div>
-        <div class="col-12 row rows mb-1"  *ngFor="let persona of personas.result">
+        <div class="col-12 row rows mb-1" *ngFor="let persona of personas.result">
             <div class="col-1">
                 <label class="btn col-3" (click)="gotoDetailPersona(persona.id)">
                     &#9998;
@@ -27,6 +27,21 @@
             </div>
         </div>
     </div>
-    <button (click)="goToPage(1)">add</button>
-    <button (click)="goToPage(-1)">minus</button>
 </div>
+    <nav aria-label="Page navigation example" class="col mt-2 d-flex justify-content-center">
+       
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" (click)="goToPage(-1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li *ngFor="let numero of listPages" class="page-item" [ngClass]="numero == currentPage?'active':''"><a (click)="pagesSelected(numero)" class="page-link">{{numero}}</a></li>
+                <li class="page-item">
+                    <a class="page-link" (click)="goToPage(1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+    </nav>
+
