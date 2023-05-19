@@ -11,7 +11,6 @@ import { max } from 'rxjs';
 export class ListComponent implements OnInit {
   private _baseUrl = "https://localhost:7099";
   personas: DataTableDTO = { page: 1, totalPages: 1, result: [{ id: '0', edad: 20, estado: 1, nombre: '23', p_Apellido: '23', s_Apellido: '23' }] }
-  todaspersonas : PersonaMiniDTO[]=[];
   currentPage = 1;
   constructor(
     private httpClient: HttpClient,
@@ -23,9 +22,7 @@ export class ListComponent implements OnInit {
   async ngOnInit(): Promise<void> {
 
     this.personas = await this.getDataListByPage(this.currentPage);
-    this.todaspersonas= await this.getDataListPersonas()
     console.log(this.personas);
-    console.log(this.todaspersonas);
 
 
   }
@@ -45,17 +42,17 @@ export class ListComponent implements OnInit {
   }
 
 
-  async getDataListPersonas(): Promise<any> {
-    let endpoint = this._baseUrl + "/Persona/GetListPersona"
-    return fetch(endpoint, {
-      headers: { 'Content-type': 'application/json' },
-      method: 'GET'
-    }).then(response => {
-      return response.json().then(data => {
-        return data
-      })
-    })
-  }
+  // async getDataListPersonas(): Promise<any> {
+  //   let endpoint = this._baseUrl + "/Persona/GetListPersona"
+  //   return fetch(endpoint, {
+  //     headers: { 'Content-type': 'application/json' },
+  //     method: 'GET'
+  //   }).then(response => {
+  //     return response.json().then(data => {
+  //       return data
+  //     })
+  //   })
+  // }
 
   async goToPage(page: number): Promise<void> {
     this.currentPage += page;
@@ -66,7 +63,6 @@ export class ListComponent implements OnInit {
     else if(this.currentPage <= 0){
       this.currentPage = 1;
     }
-    console.log(this.currentPage);
     
     this.personas = await this.getDataListByPage(this.currentPage);
   }
@@ -83,7 +79,7 @@ export class ListComponent implements OnInit {
 
       })
     })
-    await this.getDataListPersonas()
+    await this.getDataListByPage(this.currentPage)
   }
 
 
