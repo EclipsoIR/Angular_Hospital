@@ -1,22 +1,26 @@
 <h2 class="col-10 offset-1 mb-2 pb-2 mt-3" style="border-bottom: dotted 1px red;">Añadir Paciente</h2>
 
 <div *ngIf="persona">
-    <h3 class="col-10 offset-1 mb-2">{{persona.nombre+","+persona.p_Apellido+","+persona.s_Apellido}}</h3>
+    <h3 class="col-10 offset-1 mb-2">{{persona.nombre+" "+persona.p_Apellido+","+persona.s_Apellido}}</h3>
 </div>
 
 
 
 
-<form class="col-10 offset-1 mt-3">
+<form class="col-10 offset-1 mt-3" [formGroup]="patientPostDto">
     <div class="form-floating mb-3">
-        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+        <select class="form-select" id="floatingSelect" formControlName="motivo" aria-label="Floating label select example" >
             <option value="" selected disabled hidden></option>
             <option *ngFor="let motivo of motivoSelect" [value]="motivo.id">{{motivo.name}}</option>
           </select>
           <label for="floatingSelect">Motivo</label>
     </div>
-    <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-        <label for="floatingPassword">Hospital</label>
+    <div class="form-floating" *ngIf="hospitales">
+        <select class="form-select" formControlName="hospitalId" id="hospitalSelect" aria-label="Floating label select example">
+            <option value="" selected disabled hidden></option>
+            <option *ngFor="let hospital of hospitales"  [value]="hospital.id">{{hospital.nombre}} Localizacion: {{ changeLocalitation(hospital.localizacion)}}   Capacidad:{{hospital.capacidad}}   Cantidad de pacientes : {{hospital.pacientesActuales}}</option>
+        </select>
+        <label for="floatingSelect">Hospital</label>
     </div>
+    <button type="submit" class="btn btn-outline-success mt-5 offset-4 col-3 " (click)="savePatient()">Enviar</button>
 </form>

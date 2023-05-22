@@ -22,7 +22,7 @@
             <div class="col-4 pt-1">{{persona.nombre}}</div>
             <div class="col-4 pt-1">{{persona.p_Apellido}} , {{persona.s_Apellido}}</div>
             <div class="col-1 pt-1">{{persona.edad}}</div>
-            <div class="col-2 pt-1">
+            <div class="col-2 pt-1" *ngIf="!persona.isPatient">
                 <button class="btn btn-success" (click)="gotoCreatePaciente(persona.id)"> Añadir como Paciente</button>
             </div>
         </div>

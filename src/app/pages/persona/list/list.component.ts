@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Data, Router } from '@angular/router';
-import { max } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -10,12 +9,12 @@ import { max } from 'rxjs';
 })
 export class ListComponent implements OnInit {
   private _baseUrl = "https://localhost:7099";
-  personas: DataTableDTO = { page: 1, totalPages: 1, result: [{ id: '0', edad: 20, estado: 1, nombre: '23', p_Apellido: '23', s_Apellido: '23' }] }
+  personas: DataTableDTO = { page: 1, totalPages: 1, result: [{ id: '0', edad: 20, estado: 1, nombre: '23', p_Apellido: '23', s_Apellido: '23', isPatient:false }] }
   currentPage = 1;
   listPages: number[] =[]
   constructor(
     private httpClient: HttpClient,
-    private readonly router: Router
+    private readonly router: Router,
   ) {
 
   }
@@ -116,5 +115,6 @@ export interface PersonaMiniDTO {
   p_Apellido: string,
   s_Apellido: string,
   edad: number,
-  estado: number
+  estado: number,
+  isPatient:boolean
 }
