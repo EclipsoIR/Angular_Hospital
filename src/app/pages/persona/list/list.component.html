@@ -12,7 +12,8 @@
     <div>
         <div class="col-12 row rows mb-1" *ngFor="let persona of personas.result">
             <div class="col-1">
-                <label class="btn col-3" (click)="gotoDetailPersona(persona.id)">
+                <label class="btn col-3" (click)="gotoDetailPersona(persona.id)" data-bs-toggle="modal"
+                    data-bs-target="#detailModal">
                     &#9998;
                 </label>
                 <label class="btn offset-2 col-3" (click)="deletePersona(persona.id)">
@@ -28,20 +29,68 @@
         </div>
     </div>
 </div>
-    <nav aria-label="Page navigation example" class="col mt-2 d-flex justify-content-center">
-       
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" (click)="goToPage(-1)" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li *ngFor="let numero of listPages" class="page-item" [ngClass]="numero == currentPage?'active':''"><a (click)="pagesSelected(numero)" class="page-link">{{numero}}</a></li>
-                <li class="page-item">
-                    <a class="page-link" (click)="goToPage(1)" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-    </nav>
+<nav aria-label="Page navigation example" class="col mt-2 d-flex justify-content-center">
 
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" (click)="goToPage(-1)" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li *ngFor="let numero of listPages" class="page-item" [ngClass]="numero == currentPage?'active':''"><a
+                (click)="pagesSelected(numero)" class="page-link">{{numero}}</a></li>
+        <li class="page-item">
+            <a class="page-link" (click)="goToPage(1)" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<!-- Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="col-10 offset-1 row" [formGroup]="personaForm" (ngSubmit)="saveDataPersona()">
+                <div class="modal-header">
+                    <h2 class="col-10 offset-1 mb-2 pb-2 mt-3" style="border-bottom: solid 1px red;">{{!personExist ?
+                        'Crear Persona' :
+                        personExist ?'Editar Persona':''}} </h2>
+                </div>
+                <div class="modal-body">
+                    <div class="col mb-2">
+                        <label class="col" for="nombre">Nombre Persona</label>
+                        <input class="col offset-1 w-25" formControlName="nombre" type="text" >
+                    </div>
+                    <div class="col-4 mb-2">
+                        <label class="col-4" for="primerApellido">Primer Apellido</label>
+                        <input class="col-6" formControlName="primerApellido" type="text">
+                    </div>
+                    <div class="col-4 mb-2">
+                        <label class="col-4" for="segundoApellido">Segundo Apellido</label>
+                        <input class="col-6" formControlName="segundoApellido" type="text">
+                    </div>
+                    <div>
+                        <label class="col-4" for="edad">Edad</label>
+                        <input class="col-6" formControlName="edad" type="number">
+                    </div>
+                    <div class="col-4 mb-2">
+                        <label class="col-4" for="estado">Estado</label>
+                        <select class="col-6" formControlName="estado" type="number">
+                            <option *ngFor="let estado of estadosSelect" value="{{estado.id}}">{{estado.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="flex">
+                        <label class="float-end">
+                            <label class="btn btn-secondary" data-bs-dismiss="modal" (click)="goBack()">Cerrar</label>
+                            <button type="submit" data-bs-dismiss="modal"  class="btn btn-success">{{personExist ? 'Guardar' : !personExist ?
+                                'Crear':''}}</button>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

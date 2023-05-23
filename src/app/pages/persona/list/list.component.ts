@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Data, Router } from '@angular/router';
 
 @Component({
@@ -12,6 +13,29 @@ export class ListComponent implements OnInit {
   personas: DataTableDTO = { page: 1, totalPages: 1, result: [{ id: '0', edad: 20, estado: 1, nombre: '23', p_Apellido: '23', s_Apellido: '23', isPatient:false }] }
   currentPage = 1;
   listPages: number[] =[]
+  public personExist: boolean = false;
+  public showModal : boolean = false;
+  public estadosSelect = [{ id: 0, name: "Trabajando" }, { id: 1, name: "Estudiando" }, { id: 2, name: "Parado" }, { id: 3, name: "Jubilado" }, { id: 4, name: "Baja Medica" }]
+  public personaMini: PersonaMiniDTO = {
+    id: "",
+    nombre: "",
+    p_Apellido: "",
+    s_Apellido: "",
+    edad: 0,
+    estado: 0,
+    isPatient: false
+  };
+
+  personaForm = new FormGroup({
+    id: new FormControl(""),
+    nombre: new FormControl(""),
+    primerApellido: new FormControl(""),
+    segundoApellido: new FormControl(""),
+    edad: new FormControl(0),
+    estado: new FormControl(0)
+  });
+
+
   constructor(
     private httpClient: HttpClient,
     private readonly router: Router,
@@ -91,15 +115,63 @@ export class ListComponent implements OnInit {
     await this.getDataListByPage()
   }
 
+  closeModal(): void {
+    this.showModal = false;
+  }
 
+  async gotoDetailPersona(id: string) {
+    this.showModal=true;
+    if (id) {
+      this.personaMini = await this.getPersonaById(id);
+      console.log(this.personaMini);
 
-  gotoDetailPersona(id: string) {
-    this.router.navigate(["persona/details", id])
+      this.personaForm.setValue({
+        id: this.personaMini.id,
+        nombre: this.personaMini.nombre,
+        primerApellido: this.personaMini.p_Apellido,
+        segundoApellido: this.personaMini.s_Apellido,
+        edad: this.personaMini.edad,
+        estado: this.personaMini.estado
+      })
+    }
+    else {
+      this.personaForm.setValue({
+        id: '00000000-0000-0000-0000-000000000000',
+        nombre: this.personaMini.nombre,
+        primerApellido: this.personaMini.p_Apellido,
+        segundoApellido: this.personaMini.s_Apellido,
+        edad: this.personaMini.edad,
+        estado: this.personaMini.estado
+      })
+    }
+  }
+
+  public async saveDataPersona() {
+    if (this.personaForm.valid) {
+      let newPersona = this.personaForm.value;
+      console.log(newPersona);
+      
+    }
+  }
+  public goBack() {
+    this.router.navigate(["/persona/list"]);
   }
   gotoCreatePaciente(id: string) {
     this.router.navigate(["persona/addPatient", id])
   }
 
+  public async getPersonaById(id: string) {
+    let router = this._baseUrl + `/Persona/GetPersonaById/${id}`;
+    return fetch(router, {
+      headers: { 'Content-type': 'application/json' },
+      method: 'GET'
+    }).then(response => {
+      return response.json().then(data => {
+        this.personExist = true;
+        return data
+      })
+    })
+  }
 }
 
 export interface DataTableDTO {

@@ -22,7 +22,7 @@ const routes : Routes =[
     CommonModule,
     FormsModule,
     RouterModule.forChild(routes),
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class DetailsModule { }
