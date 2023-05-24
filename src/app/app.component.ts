@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Angular_Hospital';
+  
+  activateNav (): boolean{
+    let url = window.location.pathname;
+    if(url.includes("home")){
+      return false;
+    }
+    return true;
+  }
 }

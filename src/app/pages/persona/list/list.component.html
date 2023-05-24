@@ -1,5 +1,10 @@
-<h2 class="col-8 offset-2 mb-2 newBorder">Personas</h2>
-
+<div class="col-12 row">
+    <h2 class="col-6 offset-2 newBorder">Personas</h2>
+    <div class="col-2 offset-1">
+        <label class="btn btn-success " (click)="createNewPerson()" data-bs-toggle="modal"
+            data-bs-target="#detailModal"> Añadir Persona </label>
+    </div>
+</div>
 <div class="col-8 offset-2 row border">
     <div class="col-12 row">
         <div class="col-1"></div>
@@ -7,7 +12,7 @@
         <div class="col-4">Apellidos</div>
         <div class="col-1">Edad</div>
         <div class="col-2"></div>
-asdfsdafasd
+
     </div>
     <div>
         <div class="col-12 row rows mb-1" *ngFor="let persona of personas.result">
@@ -54,41 +59,61 @@ asdfsdafasd
             <form class="col-10 offset-1 row" [formGroup]="personaForm" (ngSubmit)="saveDataPersona()">
                 <div class="modal-header">
                     <h2 class="col-10 offset-1 mb-2 pb-2 mt-3" style="border-bottom: solid 1px red;">{{!personExist ?
-                        'Crear Persona' :
-                        personExist ?'Editar Persona':''}} </h2>
+                        'Crear Persona' :'Editar Persona'}} </h2>
                 </div>
-                <div class="modal-body">
-                    <div class="col mb-2">
-                        <label class="col" for="nombre">Nombre Persona</label>
-                        <input class="col offset-1 w-25" formControlName="nombre" type="text" >
+                <div class="modal-body row">
+                    <div class=" mb-2 col-12 d-flex justify-content-between align-items-center">
+                        <div>
+                            <label for="nombre">Nombre Persona</label>
+                        </div>
+                        <div>
+                            <input class="offset-1 form-control w-100" formControlName="nombre" type="text">
+                        </div>
                     </div>
-                    <div class="col-4 mb-2">
-                        <label class="col-4" for="primerApellido">Primer Apellido</label>
-                        <input class="col-6" formControlName="primerApellido" type="text">
+                    <div class="mb-2 col-12 d-flex justify-content-between align-items-center">
+                        <div>
+                            <label for="p_Apellido ">Primer Apellido</label>
+                        </div>
+                        <div>
+                            <input class="offset-1 form-control w-100" formControlName="p_Apellido" type="text">
+                        </div>
                     </div>
-                    <div class="col-4 mb-2">
-                        <label class="col-4" for="segundoApellido">Segundo Apellido</label>
-                        <input class="col-6" formControlName="segundoApellido" type="text">
+                    <div class=" mb-2 col-12 d-flex justify-content-between align-items-center">
+                        <div>
+                            <label for="s_Apellido">Segundo Apellido</label>
+                        </div>
+                        <div>
+                            <input class="offset-1 form-control" formControlName="s_Apellido" type="text">
+                        </div>
                     </div>
-                    <div>
-                        <label class="col-4" for="edad">Edad</label>
-                        <input class="col-6" formControlName="edad" type="number">
+                    <div class="mb-2 col-12 d-flex justify-content-between align-items-center">
+                        <div>
+                            <label for="edad">Edad</label>
+                        </div>
+                        <div>
+                            <input class="offset-1 form-control" formControlName="edad" type="number">
+                        </div>
                     </div>
-                    <div class="col-4 mb-2">
-                        <label class="col-4" for="estado">Estado</label>
-                        <select class="col-6" formControlName="estado" type="number">
-                            <option *ngFor="let estado of estadosSelect" value="{{estado.id}}">{{estado.name}}</option>
-                        </select>
+                    <div class=" mb-2 col-12 d-flex justify-content-between align-items-center">
+                        <div>
+                            <label for="estado">Estado</label>
+                        </div>
+                        <div>
+                            <select class=" offset-1 form-select w-100" formControlName="estado" type="number">
+                                <option *ngFor="let estado of estadosSelect" value="{{estado.id}}">{{estado.name}}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="flex">
-                        <label class="float-end">
-                            <label class="btn btn-secondary" data-bs-dismiss="modal" (click)="goBack()">Cerrar</label>
-                            <button type="submit" data-bs-dismiss="modal"  class="btn btn-success">{{personExist ? 'Guardar' : !personExist ?
-                                'Crear':''}}</button>
-                        </label>
+                    <!-- <div class="flex"> -->
+                    <div class="col-6 offset-6">
+                        <label class="btn btn-secondary col-5" data-bs-dismiss="modal" (click)="goBack()">Cerrar</label>
+                        <button type="submit" data-bs-dismiss="modal"
+                            class="btn btn-success col-5 offset-1 ">{{personExist ? 'Guardar' :
+                            'Crear'}}</button>
                     </div>
+                    <!-- </div> -->
                 </div>
             </form>
         </div>

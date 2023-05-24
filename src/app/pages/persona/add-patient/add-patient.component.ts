@@ -85,7 +85,6 @@ export class AddPatientComponent implements OnInit {
         return "Francia"
       default:
         return ''
-        break;
     }
   }
 

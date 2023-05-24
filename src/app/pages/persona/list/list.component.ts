@@ -14,7 +14,6 @@ export class ListComponent implements OnInit {
   currentPage = 1;
   listPages: number[] =[]
   public personExist: boolean = false;
-  public showModal : boolean = false;
   public estadosSelect = [{ id: 0, name: "Trabajando" }, { id: 1, name: "Estudiando" }, { id: 2, name: "Parado" }, { id: 3, name: "Jubilado" }, { id: 4, name: "Baja Medica" }]
   public personaMini: PersonaMiniDTO = {
     id: "",
@@ -29,8 +28,8 @@ export class ListComponent implements OnInit {
   personaForm = new FormGroup({
     id: new FormControl(""),
     nombre: new FormControl(""),
-    primerApellido: new FormControl(""),
-    segundoApellido: new FormControl(""),
+    p_Apellido: new FormControl(""),
+    s_Apellido: new FormControl(""),
     edad: new FormControl(0),
     estado: new FormControl(0)
   });
@@ -44,16 +43,20 @@ export class ListComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    await this.getData();
+  }
 
+  async getData (): Promise<void>{
+    this.listPages=[];
     this.personas = await this.getDataListByPage();
     for(let i=1; i<=this.personas.totalPages;i++)
     {
       this.listPages.push(i);
     }
     console.log(this.personas);
-
-
   }
+
+
 
   async getDataListByPage(): Promise<DataTableDTO> {
     let endpoint = this._baseUrl + `/Persona/TablePersonaTable?page=${this.currentPage}`
@@ -107,20 +110,28 @@ export class ListComponent implements OnInit {
       headers: { 'Content-Type': 'application/json' },
       method: 'DELETE',
       body: JSON.stringify(id)
-    }).then(response => {
-      return response.json().then(data => {
-
-      })
+    }).then(async response => {
+      await this.getData();
     })
-    await this.getDataListByPage()
   }
 
-  closeModal(): void {
-    this.showModal = false;
+
+
+
+  async createNewPerson (){
+    this.personExist=false;
+    this.personaForm.setValue({
+      id: '00000000-0000-0000-0000-000000000000',
+      nombre: '',
+      p_Apellido: '',
+      s_Apellido: '',
+      edad: 0,
+      estado: 0
+    })
   }
+
 
   async gotoDetailPersona(id: string) {
-    this.showModal=true;
     if (id) {
       this.personaMini = await this.getPersonaById(id);
       console.log(this.personaMini);
@@ -128,18 +139,8 @@ export class ListComponent implements OnInit {
       this.personaForm.setValue({
         id: this.personaMini.id,
         nombre: this.personaMini.nombre,
-        primerApellido: this.personaMini.p_Apellido,
-        segundoApellido: this.personaMini.s_Apellido,
-        edad: this.personaMini.edad,
-        estado: this.personaMini.estado
-      })
-    }
-    else {
-      this.personaForm.setValue({
-        id: '00000000-0000-0000-0000-000000000000',
-        nombre: this.personaMini.nombre,
-        primerApellido: this.personaMini.p_Apellido,
-        segundoApellido: this.personaMini.s_Apellido,
+        p_Apellido: this.personaMini.p_Apellido,
+        s_Apellido: this.personaMini.s_Apellido,
         edad: this.personaMini.edad,
         estado: this.personaMini.estado
       })
@@ -149,9 +150,19 @@ export class ListComponent implements OnInit {
   public async saveDataPersona() {
     if (this.personaForm.valid) {
       let newPersona = this.personaForm.value;
+      newPersona.estado = Number(newPersona.estado)
       console.log(newPersona);
-      
+      let endpoint = this._baseUrl+`/Persona/AddEditPersona`
+      return fetch(endpoint,{
+        headers:{'Content-type':'application/json'},
+        method:'POST',
+        body: JSON.stringify(newPersona)
+      }).then(async response=>{
+        console.log(response);
+        await this.getData();
+      })
     }
+
   }
   public goBack() {
     this.router.navigate(["/persona/list"]);
