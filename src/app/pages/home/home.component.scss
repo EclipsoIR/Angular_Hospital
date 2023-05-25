@@ -12,15 +12,34 @@
     
 }
 .container{
-    width: 90%;
-    height: 90vh;
+    min-width: 20em;
+    min-height: 5em;
+    width: 40%;
+
+    height: 50%;
     margin: auto;
-    margin-top: 1em;
+    padding: 2em;
+    margin-top: 20%;
     border-radius: .5em;
-    background-color: rgba($color: gray, $alpha: .5);
+    background-color: rgba($color: black, $alpha: .5);
     display: flex;
-    justify-content: center;
-    gap: 2em;
+    justify-content: space-around;
+    align-items: center;
+    // gap: 0.5em;
     flex-wrap: wrap;
-    
+    button {
+        min-width: 10em;
+        min-height: 2em;
+        transition:  0.3s ease-out;
+    }
+}
+button:hover {
+    background-color: violet;
+    font-weight: bolder;
+    border-radius: 50%;
+}
+.btn-success{
+    background-color: pink;
+    color: black;
+    border: 0;
 }
